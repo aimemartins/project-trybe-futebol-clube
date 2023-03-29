@@ -9,10 +9,10 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    # Os `healthcheck` devem garantir que a aplicação.
+    # Os `healthcheck` devem garantir que a aplicação
     # está operacional, antes de liberar o container
     healthcheck:
-      test: [ "CMD", "lsof", "-t", "-i:3000" ]         
+      test: [ "CMD", "lsof", "-t", "-i:3000" ]
       timeout: 10s
       retries: 5
   backend:
@@ -23,9 +23,9 @@ services:
     platform: linux/x86_64
     working_dir: /app-backend
     # Caso queira que o container esteja atualizado durante o desenvolvimento, sem que você precise ficar fazendo down e up dos containers, descomente as 3 linhas abaixo
-    # command: dev 
-    # volumes: 
-    #   - ./backend/src:/app-backend/src
+    command: dev
+    volumes:
+      - ./backend/src:/app-backend/src
     depends_on:
       db:
         condition: service_healthy
@@ -39,7 +39,7 @@ services:
       - DB_HOST=db
       - DB_PORT=3306
     healthcheck:
-      test: [ "CMD", "lsof", "-t", "-i:3001" ]         
+      test: [ "CMD", "lsof", "-t", "-i:3001" ]
       timeout: 10s
       retries: 5
   db:
@@ -52,7 +52,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
     restart: 'always'
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]         
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 10s
       retries: 5
     cap_add:
