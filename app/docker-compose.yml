@@ -9,10 +9,10 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    # Os `healthcheck` devem garantir que a aplicação
+    # Os `healthcheck` devem garantir que a aplicação.
     # está operacional, antes de liberar o container
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3000"]  # Caso utilize outra porta interna para o front, altere ela aqui também
+      test: [ "CMD", "lsof", "-t", "-i:3000" ]         
       timeout: 10s
       retries: 5
   backend:
@@ -39,7 +39,7 @@ services:
       - DB_HOST=db
       - DB_PORT=3306
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      test: [ "CMD", "lsof", "-t", "-i:3001" ]         
       timeout: 10s
       retries: 5
   db:
@@ -52,7 +52,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
     restart: 'always'
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]         
       timeout: 10s
       retries: 5
     cap_add:
