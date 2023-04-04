@@ -31,10 +31,10 @@ Teams.init({
   timestamps: false,
 });
 
-Teams.hasMany(Matches, { foreignKey: 'homeTeamId', as: 'campoEstrangeiroHome' });
-Teams.hasMany(Matches, { foreignKey: 'awayTeamId', as: 'campoEstrangeiroAway' });
-Matches.belongsTo(Teams, { foreignKey: 'homeTeamId', as: 'home' });
-Matches.belongsTo(Teams, { foreignKey: 'awayTeamId', as: 'away' });
+Teams.hasMany(Matches, { foreignKey: 'home_team_id', as: 'homeTeamId' });
+Teams.hasMany(Matches, { foreignKey: 'away_team_id', as: 'awayTeamId' });
+Matches.belongsTo(Teams, { foreignKey: 'id', as: 'homeTeam' });
+Matches.belongsTo(Teams, { foreignKey: 'id', as: 'awayTeam' });
 /**
   * `Workaround` para aplicar as associations em TS:
   * Associations 1:N devem ficar em uma das instâncias de modelo

@@ -10,15 +10,24 @@ module.exports = {
         type: Sequelize.INTEGER
       },
 
-      homeTeamId: Sequelize.INTEGER,
+      homeTeamId: {
+        type: Sequelize.INTEGER,
+        field: 'home_team_id',
+        references: {
+          model: 'teams',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
 
-      homeTeamGoals: Sequelize.INTEGER,
+      homeTeamGoals: { type: Sequelize.INTEGER, field: 'home_team_goals', },
 
-      awayTeamId: Sequelize.INTEGER,
+      awayTeamId: { type: Sequelize.INTEGER, field: 'away_team_id', },
 
-      awayTeamGoals: Sequelize.INTEGER,
+      awayTeamGoals: { type: Sequelize.INTEGER, field: 'away_team_goals', },
 
-      inProgress: Sequelize.BOOLEAN,
+      inProgress: { type: Sequelize.BOOLEAN, field: 'in_progress', },
 
     });
 
