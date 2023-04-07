@@ -1,5 +1,7 @@
 import * as express from 'express';
 import teamRouter from './routes/teamRouter';
+import loginRouter from './routes/loginRouter';
+import errorMiddleware from './middlewares/error-middleware';
 
 class App {
   public app: express.Express;
@@ -9,10 +11,10 @@ class App {
 
     this.config();
 
-    this.routes();
-
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+
+    this.routes();
   }
 
   private config():void {
@@ -28,7 +30,9 @@ class App {
   }
 
   private routes(): void {
-    this.app.use('/teams', teamRouter);
+    this.app.use(teamRouter);
+    this.app.use(loginRouter);
+    this.app.use(errorMiddleware); // o middleware de erro é sempre o último
   }
 
   public start(PORT: string | number):void {
