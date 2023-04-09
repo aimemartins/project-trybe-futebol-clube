@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcryptjs';
 import ITokenService, { IUserPayload } from '../utils/interfaces/token-service';
 import UserModel from '../database/models/UsersModel';
 import IUserValidations from '../validations/user/interfaces/user-validations';
@@ -17,8 +18,8 @@ export default class UserService implements IUserService {
     this._tokenService = tokenService;
   }
 
-  // verifyPassword(password:string, dbPassword:string) {
-  //   return password === dbPassword;
+  // async verifyPassword(password:string, dbPassword:string) {
+  //   await bcrypt.compare(password, dbPassword);
   // }
 
   async login(login: ILogin): Promise<string | void> {
@@ -27,7 +28,9 @@ export default class UserService implements IUserService {
     this._userValidations.validateUser(login);
     // o usuário existe no banco?
     const user = await this._model.findOne({ where: { email } });
-    if (!user || password !== user.password) {
+
+    // const verifyPassword = await bcrypt.compare(password, user.password);
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedUserError('Invalid email or password');
     }
     // se o usuário existe no banco
