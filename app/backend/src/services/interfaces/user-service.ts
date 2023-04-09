@@ -18,5 +18,5 @@ export interface IUserWithId extends IUser {
 
 export default interface IUserService {
   // getAll(user: ILogin): Promise <IUserWithId[] | void>
-  login(user: ILogin): Promise<IUserWithId | void>
+  login(user: ILogin): Promise<string | void>
 }

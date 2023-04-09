@@ -1,16 +1,41 @@
-// import Users from '../database/models/UsersModel';
+import ITokenService, { IUserPayload } from '../utils/interfaces/token-service';
+import UserModel from '../database/models/UsersModel';
 import IUserValidations from '../validations/user/interfaces/user-validations';
-import IUserService, { ILogin, IUserWithId } from './interfaces/user-service';
+import IUserService, { ILogin } from './interfaces/user-service';
+import UnauthorizedUserError from '../errors/unauthorized-error';
 
 export default class UserService implements IUserService {
   private _userValidations: IUserValidations;
+  private _tokenService: ITokenService;
 
-  constructor(userValidations: IUserValidations) {
+  constructor(
+    userValidations: IUserValidations,
+    private _model = UserModel,
+    tokenService: ITokenService,
+  ) {
     this._userValidations = userValidations;
+    this._tokenService = tokenService;
   }
 
-  async login(login: ILogin): Promise<IUserWithId | void> {
+  // verifyPassword(password:string, dbPassword:string) {
+  //   return password === dbPassword;
+  // }
+
+  async login(login: ILogin): Promise<string | void> {
+    const { email, password } = login;
+    // validar campos
     this._userValidations.validateUser(login);
+    // o usuário existe no banco?
+    const user = await this._model.findOne({ where: { email } });
+    if (!user || password !== user.password) {
+      throw new UnauthorizedUserError('Invalid email or password');
+    }
+    // se o usuário existe no banco
+    const payload: IUserPayload = { id: user.id, email: user.email };
+    const token = this._tokenService.createToken(payload);
+    return token;
+
+    // const user = await this.login
   }
 }
 

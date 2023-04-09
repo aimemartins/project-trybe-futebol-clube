@@ -22,6 +22,9 @@ export default class TeamController {
     try {
       const { id } = req.params;
       const team = await this._teamService.getById(Number(id));
+      if (!team) {
+        return res.status(400).json({ message: 'Team not found' });
+      }
       return res.status(200).json(team);
     } catch (error) {
       next(error);

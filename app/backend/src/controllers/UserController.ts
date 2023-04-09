@@ -11,8 +11,8 @@ export default class userController implements IUserController {
 
   async login(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const login = await this._userService.login(req.body);
-      return res.status(200).json(login);
+      const token = await this._userService.login(req.body);
+      return res.status(200).json({ token });
     } catch (error) {
       // eu poderia usar aqui um res.status(500).json('internal error')
       // mas como eu preciso saber qual tipo de erro, eu delego quem saiba responder o tipo de erro que está acontecendo
