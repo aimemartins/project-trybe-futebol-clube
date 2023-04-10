@@ -52,4 +52,13 @@ export default class MatchesService implements IMatchesService {
     // console.log('SERVICE', result);
     return result;
   }
+
+  async getById(id: number): Promise<Matches | null> {
+    const result = await this._matchesModel.findByPk(id);
+    return result;
+  }
+
+  async finishProgress(id: number):Promise <void> {
+    await this._matchesModel.update({ inProgress: false }, { where: { id } });
+  }
 }

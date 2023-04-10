@@ -30,6 +30,21 @@ export default class MatchesController implements IMatchesController {
       next(error);
     }
   };
+
+  finishProgress = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise <Response | void> => {
+    try {
+      const { id } = req.params;
+      // const getId = await this._matchesService.getById(Number(id));
+      await this._matchesService.finishProgress(Number(id));
+      return res.status(200).json({ message: 'Finished' });
+    } catch (error) {
+      next(error);
+    }
+  };
   // Pq dessa forma a função dá erro?
 
   // async getAll(req: Request, res: Response, next: NextFunction): Promise <Response | void> {

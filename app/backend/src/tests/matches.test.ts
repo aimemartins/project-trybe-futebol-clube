@@ -119,6 +119,15 @@ const inProgressFalseMock = [{
   in_progress: 0,
 }];
 
+const finishedMatchMock = {
+  id: 1,
+  home_team_id: 16,
+  home_team_goals: 1,
+  away_team_id: 8,
+  away_team_goals: 1,
+  in_progress: 0,
+}
+
 describe('[ GET /matches ]', () => {
 
   afterEach(() => { sinon.restore() });
@@ -156,6 +165,19 @@ describe('[ GET /matches ]', () => {
       expect(httpResponse.body).to.be.deep.equal(inProgressFalseMock);
     })
   })
+
+  // describe('A rota /matches/:id?finish deve receber um id de matches e poder finalizar uma partida no banco de dados', () => {
+  //   it('Deve retornar o status 200 com a mensagem "Finished" ', async () => {
+  //     sinon.stub(Model, 'update').resolves()
+
+  //     const httpResponse = await chai
+  //       .request(app)
+  //       .patch('/matches/1/finish')
+
+  //     expect(httpResponse.status).to.be.equal(200);
+
+  //   })
+  // })
 
 
 

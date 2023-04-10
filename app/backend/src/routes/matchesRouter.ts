@@ -3,6 +3,7 @@ import MatchesController from '../controllers/MatchesController';
 import MatchesService from '../services/MatchesService';
 import MatchesModel from '../database/models/MatchesModel';
 import TeamsModel from '../database/models/TeamsModel';
+import validateToken from '../middlewares/verifyToken';
 
 const router = Router();
 
@@ -10,5 +11,6 @@ const matchesService = new MatchesService(MatchesModel, TeamsModel);
 const matchesController = new MatchesController(matchesService);
 
 router.get('/matches', matchesController.getAll);
+router.patch('/matches/:id/finish', validateToken, matchesController.finishProgress);
 
 export default router;
