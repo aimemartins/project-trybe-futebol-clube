@@ -11,6 +11,18 @@ export default class MatchesController implements IMatchesController {
 
   getAll = async (req: Request, res: Response, next: NextFunction): Promise <Response | void> => {
     try {
+      const { inProgress } = req.query;
+      // console.log(inProgress);
+      if (inProgress === 'true') {
+        const matchesInProgress = await this._matchesService.getProgress(true);
+        return res.status(200).json(matchesInProgress);
+      }
+
+      if (inProgress === 'false') {
+        const matchesInProgress = await this._matchesService.getProgress(false);
+        return res.status(200).json(matchesInProgress);
+      }
+
       const matches = await this._matchesService.getAll();
       // console.log('CONTROLLER', matches);
       return res.status(200).json(matches);

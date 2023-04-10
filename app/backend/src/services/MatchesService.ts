@@ -31,4 +31,25 @@ export default class MatchesService implements IMatchesService {
     // console.log('SERVICE', result);
     return result;
   }
+
+  async getProgress(boolean: boolean): Promise<Matches[] | null> {
+    const result = await this._matchesModel.findAll({
+      where: { inProgress: boolean },
+      include: [
+        {
+          model: this._teamModel,
+          as: 'homeTeam',
+          attributes: { exclude: ['id'] },
+        },
+        {
+          model: this._teamModel,
+          as: 'awayTeam',
+          attributes: { exclude: ['id'] },
+        },
+      ],
+      // attributes: { exclude: ['home_team_id', 'away_team_id'] },
+    });
+    // console.log('SERVICE', result);
+    return result;
+  }
 }
