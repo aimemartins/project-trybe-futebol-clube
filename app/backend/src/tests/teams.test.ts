@@ -32,7 +32,7 @@ const teamsMock = [
   },
 ]
 
-describe('GET /teams', () => {
+describe('[ GET /teams ]', () => {
 
   afterEach(() => { sinon.restore() });
 

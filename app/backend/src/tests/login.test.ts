@@ -33,7 +33,7 @@ const userMockReturned = {
 }
 
 
-describe('POST /login', () => {
+describe('[ POST /login ]', () => {
 
   afterEach(() => { sinon.restore() });
 
