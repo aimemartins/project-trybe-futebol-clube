@@ -28,7 +28,7 @@ export default class MatchesService implements IMatchesService {
       ],
       // attributes: { exclude: ['home_team_id', 'away_team_id'] },
     });
-    console.log('SERVICE', result);
+    // console.log('SERVICE', result);
     return result;
   }
 }

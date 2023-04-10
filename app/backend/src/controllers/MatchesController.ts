@@ -12,7 +12,7 @@ export default class MatchesController implements IMatchesController {
   getAll = async (req: Request, res: Response, next: NextFunction): Promise <Response | void> => {
     try {
       const matches = await this._matchesService.getAll();
-      console.log('CONTROLLER', matches);
+      // console.log('CONTROLLER', matches);
       return res.status(200).json(matches);
     } catch (error) {
       next(error);
