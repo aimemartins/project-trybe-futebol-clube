@@ -23,6 +23,15 @@ const userMock = {
   password: 'valid_password',
 }
 
+const userMockReturned = {
+  id: 1,
+  username: 'valid_username',
+  role: 'admin',
+  email: 'valid_email@email.com',
+  password: 'valid_password',
+
+}
+
 
 describe('POST /login', () => {
 
@@ -107,5 +116,47 @@ describe('POST /login', () => {
   //     // expect(httpResponse.body.token).to.be.a('string')
   //   })
   // })
+
+  describe('A rota /login/role:', () => {
+    it('Deve retornar um status 401 caso o token não seja informado', async () => {
+      const httpResponse = await chai
+        .request(app)
+        .get('/login/role')
+      // cada vez que eu fizer um expect é importante testa primeiro para fazer o próximo
+      expect(httpResponse.status).to.be.equal(401);
+      expect(httpResponse.body).to.be.deep.equal({ message: "Token not found" })
+    })
+
+    it('Deve retornar um status 401 caso o token informado seja inválido', async () => {
+      const httpResponse = await chai
+        .request(app)
+        .get('/login/role')
+        .set('Authorization', 'jheuyhuehfuh')
+
+      expect(httpResponse.status).to.be.equal(401);
+      expect(httpResponse.body).to.be.deep.equal({ message: "Token must be a valid token" })
+    })
+
+    // it('Deve retornar um status 200 caso a requisição ocorra com sucesso', async () => {
+
+    //   sinon.stub(Model, 'findOne').resolves(userMock as Users)
+    //   // fazendo o login
+    //   const login = await chai
+    //     .request(app)
+    //     .post('/login')
+    //     .send(userMock);
+    //   // captura o token da resposta de login
+    //   const { token } = login.body
+
+    //   // fazendo a requisição de role
+    //   const httpResponse = await chai
+    //     .request(app)
+    //     .get('/login/role')
+    //     .set('Authorization', `${token}`)
+
+    //   expect(httpResponse.status).to.be.equal(200);
+    //   expect(httpResponse.body).to.be.deep.equal({ "role": "admin" })
+    // })
+  })
 
 })
