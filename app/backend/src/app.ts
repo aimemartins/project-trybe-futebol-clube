@@ -1,6 +1,7 @@
 import * as express from 'express';
 import teamRouter from './routes/teamRouter';
 import loginRouter from './routes/loginRouter';
+import matchesRouter from './routes/matchesRouter';
 import errorMiddleware from './middlewares/error-middleware';
 
 class App {
@@ -32,6 +33,7 @@ class App {
   private routes(): void {
     this.app.use(teamRouter);
     this.app.use(loginRouter);
+    this.app.use(matchesRouter);
     this.app.use(errorMiddleware); // o middleware de erro é sempre o último
   }
 
