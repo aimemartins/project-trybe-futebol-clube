@@ -1,6 +1,6 @@
 import { Model, INTEGER, BOOLEAN } from 'sequelize';
 import db from '.';
-// import OtherModel from './OtherModel';
+import Teams from './TeamsModel';
 
 class Matches extends Model {
   // declare <campo>: <tipo>;
@@ -65,6 +65,13 @@ Matches.init({
   modelName: 'matches',
   timestamps: false,
 });
+
+// DÚVIDA
+// pq a foreinKey é 'homeTeamId' e não 'home_team_id'?
+Teams.hasMany(Matches, { foreignKey: 'homeTeamId', as: 'homeTeam' });
+Teams.hasMany(Matches, { foreignKey: 'awayTeamId', as: 'awayTeam' });
+Matches.belongsTo(Teams, { foreignKey: 'homeTeamId', as: 'homeTeam' });
+Matches.belongsTo(Teams, { foreignKey: 'awayTeamId', as: 'awayTeam' });
 
 /**
   * `Workaround` para aplicar as associations em TS:
