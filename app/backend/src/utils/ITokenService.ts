@@ -16,4 +16,8 @@ export default class JwtTokenService implements ITokenService {
   createToken(payload: IUserPayload): string {
     return this._jwt.sign(payload, this._secret, this._options);
   }
+
+  verifyToken(token: string) {
+    return this._jwt.verify(token, this._secret);
+  }
 }

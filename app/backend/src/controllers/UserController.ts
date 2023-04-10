@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import IUserController from './interfaces/user-controller';
 import IUserService from '../services/interfaces/user-service';
+// import { IAuthorization } from '../utils/interfaces/token-service';
 
 export default class userController implements IUserController {
   private _userService: IUserService;
@@ -13,6 +14,20 @@ export default class userController implements IUserController {
     try {
       const token = await this._userService.login(req.body);
       return res.status(200).json({ token });
+    } catch (error) {
+      // eu poderia usar aqui um res.status(500).json('internal error')
+      // mas como eu preciso saber qual tipo de erro, eu delego quem saiba responder o tipo de erro que está acontecendo
+      // nos middlewares de erro eu chamo o status code do erro ou um erro genérico
+      next(error);
+    }
+  }
+
+  async getRole(req: Request, res: Response, next: NextFunction): Promise <Response | undefined> {
+    try {
+      const { user } = req.body;
+      const { email } = user;
+      const role = await this._userService.getRole(email);
+      return res.status(200).json({ role });
     } catch (error) {
       // eu poderia usar aqui um res.status(500).json('internal error')
       // mas como eu preciso saber qual tipo de erro, eu delego quem saiba responder o tipo de erro que está acontecendo

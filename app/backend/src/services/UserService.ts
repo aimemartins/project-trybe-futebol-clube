@@ -34,11 +34,27 @@ export default class UserService implements IUserService {
       throw new UnauthorizedUserError('Invalid email or password');
     }
     // se o usuário existe no banco
-    const payload: IUserPayload = { id: user.id, email: user.email };
+    const payload: IUserPayload = {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      email: user.email,
+    };
+
     const token = this._tokenService.createToken(payload);
     return token;
 
     // const user = await this.login
+  }
+
+  async getRole(email: string) {
+    const user = await this._model.findOne({ where: { email } });
+
+    if (!user) {
+      return undefined;
+    }
+    const { role } = user.dataValues;
+    return role;
   }
 }
 
