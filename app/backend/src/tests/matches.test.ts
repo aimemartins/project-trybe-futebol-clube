@@ -11,6 +11,7 @@ import { Model } from 'sequelize';
 import Users from '../database/models/UsersModel'
 import UserService from '../services/UserService';
 import Matches from '../database/models/MatchesModel'
+import * as jwt from 'jsonwebtoken';
 
 
 chai.use(chaiHttp);
@@ -23,6 +24,7 @@ const userMock = {
   email: 'valid_email@email.com',
   password: 'valid_password',
 }
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNjgxMjIxMTc3LCJleHAiOjE2ODM4MTMxNzd9.QkUVx8QpWyqCxEv_NnhO_TXD16pLtzjbLXPxeZ4mPnk"
 
 const MatchesMock = [
   {
@@ -138,9 +140,17 @@ const createdMatchMock = {
   id: 1,
   homeTeamId: 16,
   homeTeamGoals: 2,
-  awayTeamId: 8,
+  awayTeamId: 16,
   awayTeamGoals: 2,
   inProgress: true,
+}
+
+const user = {
+  id: 1,
+  email: "email@email.com",
+  username: "email",
+  password: "12345678",
+  role: "user"
 }
 
 describe('[ GET /matches ]', () => {
@@ -181,20 +191,21 @@ describe('[ GET /matches ]', () => {
     })
   })
 
-  // describe('A rota /matches/:id?finish deve receber um id de matches e poder finalizar uma partida no banco de dados', () => {
-  //   it('Deve retornar o status 200 com a mensagem "Finished" ', async () => {
-  //     sinon.stub(Model, 'update').resolves()
+  describe('A rota /matches/:id?finish deve receber um id de matches e poder finalizar uma partida no banco de dados', () => {
+    it('Deve retornar o status 200 com a mensagem "Finished" ', async () => {
+      sinon.stub(jwt, 'verify').resolves(user as Users)
+      sinon.stub(Model, 'update').resolves([1])
 
-  //     const httpResponse = await chai
-  //       .request(app)
-  //       .patch('/matches/1/finish')
+      const httpResponse = await chai
+        .request(app)
+        .patch('/matches/1/finish').send()
+        .auth(token, { type: 'bearer' })
 
-  //     expect(httpResponse.status).to.be.equal(200);
+      expect(httpResponse.status).to.be.equal(200);
+      expect(httpResponse.body).to.be.deep.equal({ message: "Finished" });
 
-  //   })
-  // })
-
-
+    })
+  })
 
 })
 
@@ -202,32 +213,56 @@ describe('[ POST /matches ]', () => {
 
   afterEach(() => { sinon.restore() });
 
-  describe('Caso a requisição ocorra com sucesso', () => {
-    // it('Deve retornar um status 201 com os dados da partida', async () => {
-    //   sinon.stub(Model, 'create').resolves(createdMatchMock as Matches)
+  describe('Caso ocorra um erro na requisição', () => {
+    it('Deve retornar um status 422 caso o campo "homeTeam" e o "awayTeam" sejam iguais ', async () => {
+      sinon.stub(Model, 'create').resolves(createdMatchMock as Matches)
+      sinon.stub(jwt, 'verify').resolves(user as Users)
+      const httpResponse = await chai
+        .request(app)
+        .post('/matches').send({
+          homeTeamId: 16,
+          awayTeamId: 16,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+        }).auth(token, { type: 'bearer' })
 
-    //   const { body } = await chai
-    //     .request(app)
-    //     .post('/login')
-    //     .send(userMock);
-    //   // captura o token da resposta de login
-    //   const { token } = body
+      expect(httpResponse.status).to.be.equal(422);
+      expect(httpResponse.body).to.be.deep.equal({ "message": "It is not possible to create a match with two equal teams" });
+    })
 
-    //   const httpResponse = await chai
-    //     .request(app)
-    //     .post('/matches').set('Authorization', `${token}`).send({
-    //       homeTeamId: 16,
-    //       homeTeamGoals: 2,
-    //       awayTeamId: 8,
-    //       awayTeamGoals: 2,
-    //     })
+    it('Deve retornar um status 404 caso algum dos times não esteja cadastrado no banco de dados ', async () => {
+      sinon.stub(jwt, 'verify').resolves(user as Users)
+      sinon.stub(Model, 'findByPk').resolves(null)
+      const httpResponse = await chai
+        .request(app)
+        .post('/matches').send({
+          homeTeamId: 50,
+          awayTeamId: 60,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+        }).auth(token, { type: 'bearer' })
 
-    //   expect(httpResponse.status).to.be.equal(201);
-    //   //expect(httpResponse.body).to.be.deep.equal(createdMatchMock);
-    // })
+      expect(httpResponse.status).to.be.equal(404);
+      expect(httpResponse.body).to.be.deep.equal({ "message": "There is no team with such id!" });
+    })
+
   })
 
-  describe('Caso ocorra um erro na requisição', () => {
+  describe('Caso a requisição ocorra com sucesso', () => {
+    it('Deve retornar um status 201 com os dados da partida', async () => {
+      sinon.stub(Model, 'create').resolves(createdMatchMock as Matches)
+      sinon.stub(jwt, 'verify').resolves(user as Users)
+      const httpResponse = await chai
+        .request(app)
+        .post('/matches').send({
+          homeTeamId: 16,
+          awayTeamId: 12,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+        }).auth(token, { type: 'bearer' })
 
+      expect(httpResponse.status).to.be.equal(201);
+      expect(httpResponse.body).to.be.deep.equal(createdMatchMock);
+    })
   })
 })
