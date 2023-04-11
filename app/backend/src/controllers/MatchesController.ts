@@ -45,6 +45,24 @@ export default class MatchesController implements IMatchesController {
       next(error);
     }
   };
+
+  updateMatch = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise <Response | void> => {
+    try {
+      const { id } = req.params;
+      const { homeTeamGoals, awayTeamGoals } = req.body;
+
+      await this._matchesService
+        .updateMatch(Number(homeTeamGoals), Number(awayTeamGoals), Number(id));
+      return res.status(200).json({ message: 'The match has been updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   // Pq dessa forma a função dá erro?
 
   // async getAll(req: Request, res: Response, next: NextFunction): Promise <Response | void> {

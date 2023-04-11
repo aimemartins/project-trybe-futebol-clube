@@ -61,4 +61,9 @@ export default class MatchesService implements IMatchesService {
   async finishProgress(id: number):Promise <void> {
     await this._matchesModel.update({ inProgress: false }, { where: { id } });
   }
+
+  async updateMatch(homeGoals:number, awayGoals: number, id: number): Promise<void> {
+    await this._matchesModel
+      .update({ homeTeamGoals: homeGoals, awayTeamGoals: awayGoals }, { where: { id } });
+  }
 }

@@ -11,6 +11,7 @@ const matchesService = new MatchesService(MatchesModel, TeamsModel);
 const matchesController = new MatchesController(matchesService);
 
 router.get('/matches', matchesController.getAll);
+router.patch('/matches/:id', validateToken, matchesController.updateMatch);
 router.patch('/matches/:id/finish', validateToken, matchesController.finishProgress);
 
 export default router;
