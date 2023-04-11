@@ -6,4 +6,5 @@ export default interface IMatchesService {
   getById(id: number): Promise <Matches | null>
   finishProgress(id:number):Promise <void>
   updateMatch(homeGoals:number, awayGoals: number, id: number): Promise <void>
+  createMatch(homeId:number, awayId:number, homeGoals:number, awayGoals: number): Promise <Matches>
 }

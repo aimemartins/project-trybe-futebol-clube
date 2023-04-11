@@ -10,6 +10,7 @@ import { Response } from 'superagent';
 import { Model } from 'sequelize';
 import Users from '../database/models/UsersModel'
 import UserService from '../services/UserService';
+import Matches from '../database/models/MatchesModel'
 
 
 chai.use(chaiHttp);
@@ -17,6 +18,11 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 chai.use(chaiHttp);
+
+const userMock = {
+  email: 'valid_email@email.com',
+  password: 'valid_password',
+}
 
 const MatchesMock = [
   {
@@ -128,6 +134,15 @@ const finishedMatchMock = {
   in_progress: 0,
 }
 
+const createdMatchMock = {
+  id: 1,
+  homeTeamId: 16,
+  homeTeamGoals: 2,
+  awayTeamId: 8,
+  awayTeamGoals: 2,
+  inProgress: true,
+}
+
 describe('[ GET /matches ]', () => {
 
   afterEach(() => { sinon.restore() });
@@ -181,4 +196,38 @@ describe('[ GET /matches ]', () => {
 
 
 
+})
+
+describe('[ POST /matches ]', () => {
+
+  afterEach(() => { sinon.restore() });
+
+  describe('Caso a requisição ocorra com sucesso', () => {
+    // it('Deve retornar um status 201 com os dados da partida', async () => {
+    //   sinon.stub(Model, 'create').resolves(createdMatchMock as Matches)
+
+    //   const { body } = await chai
+    //     .request(app)
+    //     .post('/login')
+    //     .send(userMock);
+    //   // captura o token da resposta de login
+    //   const { token } = body
+
+    //   const httpResponse = await chai
+    //     .request(app)
+    //     .post('/matches').set('Authorization', `${token}`).send({
+    //       homeTeamId: 16,
+    //       homeTeamGoals: 2,
+    //       awayTeamId: 8,
+    //       awayTeamGoals: 2,
+    //     })
+
+    //   expect(httpResponse.status).to.be.equal(201);
+    //   //expect(httpResponse.body).to.be.deep.equal(createdMatchMock);
+    // })
+  })
+
+  describe('Caso ocorra um erro na requisição', () => {
+
+  })
 })
