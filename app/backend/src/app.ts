@@ -3,6 +3,7 @@ import teamRouter from './routes/teamRouter';
 import loginRouter from './routes/loginRouter';
 import matchesRouter from './routes/matchesRouter';
 import errorMiddleware from './middlewares/error-middleware';
+import leaderboardRouter from './routes/leaderboardRouter';
 
 class App {
   public app: express.Express;
@@ -34,6 +35,7 @@ class App {
     this.app.use(teamRouter);
     this.app.use(loginRouter);
     this.app.use(matchesRouter);
+    this.app.use(leaderboardRouter);
     this.app.use(errorMiddleware); // o middleware de erro é sempre o último
   }
 
