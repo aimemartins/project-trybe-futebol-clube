@@ -6,10 +6,11 @@ import Teams from '../database/models/TeamsModel';
 
 const router = Router();
 
-const service = new LeaderboardService(Matches, Teams);
+const service = new LeaderboardService(Teams, Matches);
 const controller = new LeaderboardController(service);
 
 // router.get('/leaderboard/home', (req, res) => res.json({ message: 'vc está em leader' }));
-router.get('/leaderboard/home', controller.getInformations);
+router.get('/leaderboard/home', controller.getHomeMatches);
+router.get('/leaderboard/away', controller.getAwayMatches);
 
 export default router;

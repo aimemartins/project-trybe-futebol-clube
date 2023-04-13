@@ -13,3 +13,17 @@ export interface ILeaderboardServiceHome extends ILeaderboardService {
   goalsBalance: number,
   efficiency: number
 }
+
+export interface IMatchesLeader {
+  id?: number,
+  homeTeamId: number,
+  homeTeamGoals: number,
+  awayTeamId: number,
+  awayTeamGoals: number,
+  inProgress?: boolean,
+}
+
+export interface ITeamLeader {
+  id: number;
+  teamName: string;
+}
