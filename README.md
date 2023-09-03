@@ -446,7 +446,7 @@ Com os containers do _Banco de dados_, _Back-end_ e _Front-end_ rodando e saudá
 </details>
    
 ## Status
-O projeto está com 60% dos requisitos totais finalizados e em andamento com a resolução dos demais requisitos 🚧 
+O projeto está com 83% dos requisitos totais finalizados e em andamento com a resolução dos demais requisitos 🚧 
 
 ## Requisitos 
 # Sobre os Requisitos
