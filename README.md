@@ -1,10 +1,15 @@
 # Projeto Trybe Futebol Clube
 
-Esse projeto foi elaborado durante o Módulo de __Back-end__ do curso da Trybe para desenvolver habilidades com os conteúdos de ✨ __Typescript__ ✨ e tecnologias de: <br>
+Esse projeto foi elaborado durante o Módulo de __Back-end__ do curso da Trybe para desenvolver habilidades com todos os conteúdos backend vistos até aqui, como os assuntos de: <br>
 <br>
-🔹 Tipagem Estática e Generics <br>
-🔹 Express com TypeScript <br>
+🔹 Configurações Docker <br>
+🔹 Banco de dados relacional (SQL) <br>
+🔹 Sequelize <br>
+🔹 Criação de endpoints <br>
+🔹 TDD: Test Driven Development <br>
 🔹 JWT - (JSON Web Token) <br>
+🔹 Typescript <br>
+🔹 Arquitetura em Camadas (MSC) <br>
 
  ###### :warning: Importante <br> <br>  ▪  Apenas os arquivos indicados nos requisitos foram desenvolvidos pelo(s) aluno(s), os demais são de autoria da Trybe. <br> <br>▪  Os projetos e assuntos são cumulativos, a medida que se é aprendido e aplicado os assuntos, provavelmente eles serão utilizados nos projetos subsequenquentes dos módulos.
 
